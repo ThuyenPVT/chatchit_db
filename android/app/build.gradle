@@ -1,0 +1,102 @@
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+def flutterVersionCode = build_versions.versionCodeRelease
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = build_versions.versionNameRelease
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+def APP_ID = "com.chuongdever.structure_flutter"
+android {
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.build_tools
+
+    flavorDimensions "default"
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+
+    productFlavors {
+        dev {
+            applicationIdSuffix = ".dev"
+            manifestPlaceholders = [applicationName: "Structure-DEV"]
+        }
+        stg {
+            applicationIdSuffix = ".stg"
+            manifestPlaceholders = [applicationName: "Structure-STG"]
+        }
+        prd {
+            manifestPlaceholders = [applicationName: "@string/app_name"]
+
+            def signFile = file("../local.properties")
+            def signingProps = new Properties()
+
+            signingProps.load(new FileInputStream(signFile))
+        }
+    }
+
+    defaultConfig {
+        applicationId "${APP_ID}"
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+    }
+
+    signingConfigs {
+        debug {}
+
+        release {
+            if (!System.getenv('CI')) {
+                def signFile = file("../local.properties")
+                def signingProps = new Properties()
+
+                signingProps.load(new FileInputStream(signFile))
+
+                /*config keystore*/
+            }
+        }
+    }
+
+    buildTypes {
+        debug {}
+
+        release {
+            shrinkResources true
+            minifyEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+flutter {
+    source '../..'
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+}
