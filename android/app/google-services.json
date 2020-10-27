@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "442454237549",
+    "firebase_url": "https://chatchitdb.firebaseio.com",
+    "project_id": "chatchitdb",
+    "storage_bucket": "chatchitdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442454237549:android:b1d5a923fd891912b63a64",
+        "android_client_info": {
+          "package_name": "com.chuongdever.structure_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "442454237549-jn5dnpprj1gf59r4i6ound10hq85res3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCjP-iolssdb9msdQtlpnAlkV7K0IBdws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "442454237549-jn5dnpprj1gf59r4i6ound10hq85res3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "442454237549-92bd6iat7u0p0lp088ijd18ngu4g6pfk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.chuongdever.structureFlutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
