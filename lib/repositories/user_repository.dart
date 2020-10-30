@@ -1,22 +1,32 @@
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:structure_flutter/data/source/remote/user_remote_datasources.dart';
+import 'package:structure_flutter/di/injection.dart';
 
-import 'package:injectable/injectable.dart';
-import 'package:structure_flutter/data/entities/user.dart';
-import 'package:structure_flutter/data/source/remote/user_remote_datasource.dart';
+class UserRepository {
+  final _userRemoteDataSource = getIt<UserRemoteDataSource>();
 
-import '../data/entities/user.dart';
+  Future<FirebaseUser> signInWithGoogle() {
+    return _userRemoteDataSource.signInWithGoogle();
+  }
 
-abstract class UserRepository {
-  Future<List<UserGitEntity>> getUser(int page);
-}
+  Future<void> signInWithCredentials(String email, String password) {
+    return _userRemoteDataSource.signInWithCredentials(email, password);
+  }
 
-@Singleton(as: UserRepository)
-class UserRepositoryImpl implements UserRepository {
-  final UserRemoteDataSource _userRemoteDataSource;
+  Future<void> signUp(String email, String password) {
+    return _userRemoteDataSource.signUp(email, password);
+  }
 
-  UserRepositoryImpl(this._userRemoteDataSource);
+  Future<void> signOut() {
+    return _userRemoteDataSource.signOut();
+  }
 
-  @override
-  Future<List<UserGitEntity>> getUser(int page) async {
-    return _userRemoteDataSource.getUser(page);
+  Future<bool> isSignedIn() {
+    return _userRemoteDataSource.isSignedIn();
+  }
+
+  Future<FirebaseUser> getUser() {
+    return _userRemoteDataSource.getUser();
   }
 }
