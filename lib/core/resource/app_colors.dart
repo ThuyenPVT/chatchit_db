@@ -14,13 +14,20 @@ class AppColors {
   static const red = Colors.red;
 
   //Blue colors
-  static const lightBlueColor = Colors.lightBlueAccent;
+  static const lightBlueAccent = Colors.lightBlueAccent;
   static const blue = Color.fromRGBO(0, 88, 122, 1);
-  static const blueAccentColor = Colors.blueAccent;
-  static const blueNormalColor = Colors.blue;
-  static const lightBlueAccentColor = Colors.lightBlueAccent;
+  static const blueAccent = Colors.blueAccent;
+  static const blueNormal = Colors.blue;
 
   //Green colors
-  static const lightGreenAccentColor = Colors.lightGreenAccent;
+  static const lightGreenAccent = Colors.lightGreenAccent;
   static const greenColor = Colors.green;
+  static const List<Color> googleColors = [
+    AppColors.red,
+    AppColors.lightBlueAccent,
+  ];
+  static const List<Color> colors = [
+    AppColors.blueAccent,
+    AppColors.lightBlueAccent
+  ];
 }

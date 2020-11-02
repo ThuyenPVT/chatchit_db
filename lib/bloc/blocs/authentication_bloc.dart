@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:bloc/bloc.dart';
-import 'package:injectable/injectable.dart';
 import '../bloc.dart';
+import 'package:bloc/bloc.dart';
 import '../../di/injection.dart';
+import 'package:injectable/injectable.dart';
 import '../../repositories/user_repository.dart';
 
 @singleton

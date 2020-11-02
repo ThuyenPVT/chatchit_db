@@ -8,7 +8,9 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/core/common/constants/app_constant.dart';
-import 'package:structure_flutter/data/source/remote/user_remote_datasources.dart';
+import 'package:structure_flutter/data/source/remote/account_remote_datasource.dart';
+import 'package:structure_flutter/data/source/remote/user_remote_datasource.dart';
+import 'package:structure_flutter/repositories/account_repository.dart';
 import 'package:structure_flutter/repositories/user_repository.dart';
 import 'package:structure_flutter/widgets/snackbar_widget.dart';
 import '../buildconfig/build_config.dart';
@@ -31,9 +33,12 @@ GetIt $initGetIt(
   gh.singleton<BuildConfig>(BuildConfig());
   gh.singleton<DioClient>(DioClient(AppConstant.BASE_URL, Dio()));
   gh.singleton<UserRemoteDataSource>(UserRemoteDataSourceImpl());
+  gh.singleton<AccountRemoteDataSource>(AccountRemoteDataSourceImpl());
   gh.singleton<UserRepository>(UserRepository());
+  gh.singleton<AccountRepository>(AccountRepository());
   gh.singleton<SnackBarWidget>(SnackBarWidget());
   gh.singleton(AuthenticationBloc(Uninitialized()));
   gh.factory<LoginBloc>(() => LoginBloc(LoginState.empty()));
+  gh.factory<RegisterBloc>(() => RegisterBloc(RegisterState.empty()));
   return get;
 }

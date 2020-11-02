@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:structure_flutter/data/source/remote/user_remote_datasources.dart';
 import 'package:structure_flutter/di/injection.dart';
+import 'package:structure_flutter/data/source/remote/user_remote_datasource.dart';
 
 class UserRepository {
   final _userRemoteDataSource = getIt<UserRemoteDataSource>();
 
-  Future<FirebaseUser> signInWithGoogle() {
+  Future<User> signInWithGoogle() {
     return _userRemoteDataSource.signInWithGoogle();
   }
 
@@ -14,7 +14,7 @@ class UserRepository {
     return _userRemoteDataSource.signInWithCredentials(email, password);
   }
 
-  Future<void> signUp(String email, String password) {
+  Future<String> signUp(String email, String password) {
     return _userRemoteDataSource.signUp(email, password);
   }
 
@@ -26,7 +26,7 @@ class UserRepository {
     return _userRemoteDataSource.isSignedIn();
   }
 
-  Future<FirebaseUser> getUser() {
+  Future<User> getUser() {
     return _userRemoteDataSource.getUser();
   }
 }
