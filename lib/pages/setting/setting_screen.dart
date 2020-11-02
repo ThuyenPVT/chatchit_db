@@ -1,7 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
 import 'widgets/avatar.dart';
 import 'widgets/birthday_date_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'widgets/gender_radio.dart';
 import 'widgets/language_dropdown.dart';
 

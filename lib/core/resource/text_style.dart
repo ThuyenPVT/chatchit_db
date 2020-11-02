@@ -27,6 +27,15 @@ class AppStyles {
   static const black = TextStyle(color: Colors.black);
   static const black_24 = TextStyle(color: Colors.black, fontSize: 24.0);
   static const black_20 = TextStyle(color: Colors.black, fontSize: 20.0);
+  static const black_18 = TextStyle(
+    color: Colors.black,
+    fontSize: 18.0,
+  );
+  static const black_18_FW200 = TextStyle(
+      color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.w200);
+  static const black_18_FW700 = TextStyle(
+      color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.w700);
+  static const black_15 = TextStyle(color: Colors.black, fontSize: 15.0);
   static const black_12 = TextStyle(color: Colors.black12, fontSize: 16.0);
   static const black12_10 = TextStyle(color: Colors.black12, fontSize: 10.0);
   static const black38_16 = TextStyle(color: Colors.black38, fontSize: 16.0);

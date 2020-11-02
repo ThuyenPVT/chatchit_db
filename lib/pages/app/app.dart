@@ -11,8 +11,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final _loginBloc = getIt<LoginBloc>();
   final _authenticationBloc = getIt<AuthenticationBloc>();
+  final _loginBloc = getIt<LoginBloc>();
 
   @override
   void initState() {

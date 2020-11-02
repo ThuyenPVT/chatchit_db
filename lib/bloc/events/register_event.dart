@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -6,28 +7,28 @@ abstract class RegisterEvent extends Equatable {
   RegisterEvent([List props = const []]) : super();
 }
 
-class EmailChange extends RegisterEvent {
+class RegisterEmailChanged extends RegisterEvent {
   final String email;
 
-  EmailChange({@required this.email}) : super([email]);
+  RegisterEmailChanged({@required this.email}) : super([email]);
 
   @override
   List<Object> get props => [email];
 }
 
-class PasswordChange extends RegisterEvent {
+class RegisterPasswordChanged extends RegisterEvent {
   final String password;
 
-  PasswordChange({@required this.password}) : super([password]);
+  RegisterPasswordChanged({@required this.password}) : super([password]);
 
   @override
   List<Object> get props => [password];
 }
 
-class FullNameChange extends RegisterEvent {
+class RegisterFullNameChanged extends RegisterEvent {
   final String fullName;
 
-  FullNameChange({@required this.fullName}) : super([fullName]);
+  RegisterFullNameChanged({@required this.fullName}) : super([fullName]);
 
   @override
   List<Object> get props => [fullName];
@@ -50,7 +51,7 @@ class RegisterWithCredentials extends RegisterEvent {
   final String fullName;
   final String email;
   final String password;
-  final String imageURL;
+  final File imageURL;
 
   RegisterWithCredentials({
     @required this.fullName,

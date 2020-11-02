@@ -1,14 +1,16 @@
-import 'package:structure_flutter/core/resource/app_colors.dart';
-import 'file:///G:/Project/chatchit_project/Structure_Flutter/lib/pages/authen/login/widgets/signup_button.dart';
-import 'package:structure_flutter/widgets/button_widget.dart';
-import '../../../../widgets/form_widget.dart';
-import 'checkbox_form.dart';
-import '../../../../bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:structure_flutter/di/injection.dart';
-import 'package:structure_flutter/widgets/snackbar_widget.dart';
+import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
+import 'package:structure_flutter/di/injection.dart';
+import 'package:structure_flutter/widgets/button_widget.dart';
+import 'package:structure_flutter/widgets/snackbar_widget.dart';
+
+import 'file:///G:/Project/chatchit_project/Structure_Flutter/lib/pages/authen/login/widgets/signup_button.dart';
+
+import '../../../../bloc/bloc.dart';
+import '../../../../widgets/form_widget.dart';
+import 'checkbox_form.dart';
 
 class LoginForm extends StatefulWidget {
   State<LoginForm> createState() => _LoginFormState();
@@ -41,7 +43,7 @@ class _LoginFormState extends State<LoginForm> {
           _snackBar.failure('Login failure !');
         }
         if (state.isSubmitting) {
-          _snackBar.submitting('Logging in...');
+          _snackBar.loading('Logging in...');
         }
         if (state.isSuccess) {
           BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
