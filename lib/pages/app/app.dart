@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/di/injection.dart';
 import 'package:structure_flutter/pages/authen/login/login_screen.dart';
-import 'package:structure_flutter/pages/home/home_page.dart';
+import 'package:structure_flutter/pages/home/home_screen.dart';
 import 'package:structure_flutter/pages/splash/splash_screen.dart';
 
 class App extends StatefulWidget {
@@ -42,7 +42,7 @@ class _AppState extends State<App> {
               return LoginScreen();
             }
             if (state is Authenticated) {
-              return HomeScreen(name: state.user.uid);
+              return HomeScreen(user: state.user);
             }
             return Container();
           },
