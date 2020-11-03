@@ -19,7 +19,7 @@ class SnackBarWidget {
           content: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Logging in...'),
+              Text(_message),
               CircularProgressIndicator(),
             ],
           ),

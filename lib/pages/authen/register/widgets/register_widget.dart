@@ -1,60 +1,76 @@
-import 'package:structure_flutter/core/resource/app_colors.dart';
-import 'file:///G:/Project/chatchit_project/Structure_Flutter/lib/pages/authen/login/widgets/signup_button.dart';
-import 'package:structure_flutter/widgets/button_widget.dart';
-import '../../../../widgets/form_widget.dart';
-import 'checkbox_form.dart';
-import '../../../../bloc/bloc.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:structure_flutter/di/injection.dart';
-import 'package:structure_flutter/widgets/snackbar_widget.dart';
+import 'package:structure_flutter/bloc/bloc.dart';
+import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
+import 'package:structure_flutter/di/injection.dart';
+import 'package:structure_flutter/pages/authen/login/login_screen.dart';
+import 'package:structure_flutter/widgets/button_widget.dart';
+import 'package:structure_flutter/widgets/form_widget.dart';
+import 'package:structure_flutter/widgets/snackbar_widget.dart';
 
-class LoginForm extends StatefulWidget {
-  State<LoginForm> createState() => _LoginFormState();
+class RegisterWidget extends StatefulWidget {
+  State<RegisterWidget> createState() => _RegisterWidgetState();
 }
 
-class _LoginFormState extends State<LoginForm> {
-  final _loginBloc = getIt<LoginBloc>();
+class _RegisterWidgetState extends State<RegisterWidget> {
+  String _imageURL;
+
   final _snackBar = getIt<SnackBarWidget>();
+
+  final _registerBloc = getIt<RegisterBloc>();
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
+
 
   @override
   void dispose() {
-    _loginBloc.close();
-    _emailController.addListener(_onEmailChanged);
-    _passwordController.addListener(_onPasswordChanged);
-    _passwordController.dispose();
+    _registerBloc.close();
     _emailController.dispose();
+    _passwordController.dispose();
+    _fullNameController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener(
-      cubit: _loginBloc,
-      listener: (BuildContext context, LoginState state) {
+      cubit: _registerBloc,
+      listener: (BuildContext context, RegisterState state) {
         _snackBar.buildContext = context;
         if (state.isFailure) {
-          _snackBar.failure('Login failure !');
+          _snackBar.failure('Register failure !');
         }
         if (state.isSubmitting) {
-          _snackBar.submitting('Logging in...');
+          _snackBar.submitting('Register ...');
         }
         if (state.isSuccess) {
-          BlocProvider.of<AuthenticationBloc>(context).add(LoggedIn());
+          _snackBar.success('Register successful !');
+          Timer(Duration(seconds: 2), () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LoginScreen()));
+          });
         }
       },
       child: BlocBuilder(
-        cubit: _loginBloc,
-        builder: (BuildContext context, LoginState state) {
+        cubit: _registerBloc,
+        builder: (BuildContext context, RegisterState state) {
           return Padding(
             padding: EdgeInsets.all(20.0),
             child: Form(
               child: ListView(
                 children: <Widget>[
+                  FormWidget(
+                    controller: _fullNameController,
+                    hint: 'Enter your full name',
+                    title: 'Full Name',
+                    prefixIcon: AppIcons.account,
+                    isValidForm: state.isFullNameValid,
+                    validateMsg: 'Enter your valid full name',
+                  ),
                   FormWidget(
                     controller: _emailController,
                     hint: 'Enter your email',
@@ -73,19 +89,11 @@ class _LoginFormState extends State<LoginForm> {
                     isDisplayText: true,
                     suffixIcon: Icons.remove_red_eye,
                   ),
-                  CheckBoxForm(),
                   ButtonWidget(
                     onPressed: _onFormSubmitted,
-                    text: 'LOGIN',
+                    text: 'REGISTER',
                     colors: AppColors.colors,
                   ),
-                  ButtonWidget(
-                    onPressed: _onGoogleFormSubmitted,
-                    text: 'LOGIN WITH GOOGLE ACCOUNT',
-                    colors: AppColors.googleColors,
-                    icon: AppIcons.google,
-                  ),
-                  SignUpButton(),
                 ],
               ),
             ),
@@ -94,27 +102,12 @@ class _LoginFormState extends State<LoginForm> {
       ),
     );
   }
-
   void _onFormSubmitted() {
-    _loginBloc.add(LoginWithCredentials(
+    _registerBloc.add(RegisterWithCredentials(
+      fullName: _fullNameController.text,
       email: _emailController.text,
       password: _passwordController.text,
-    ));
-  }
-
-  void _onGoogleFormSubmitted() {
-    _loginBloc.add(LoginWithGoogle());
-  }
-
-  void _onEmailChanged() {
-    _loginBloc.add(EmailChanged(
-      email: _emailController.text,
-    ));
-  }
-
-  void _onPasswordChanged() {
-    _loginBloc.add(PasswordChanged(
-      password: _passwordController.text,
+      imageURL: _imageURL,
     ));
   }
 }

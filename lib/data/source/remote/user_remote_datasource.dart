@@ -1,25 +1,71 @@
-// import 'dart:convert';
-//
-// import 'package:dio/dio.dart';
-// import 'package:injectable/injectable.dart';
-// import 'package:structure_flutter/data/entities/user.dart';
-// import 'package:structure_flutter/data/source/remote/api/response/user_git_response.dart';
-// import 'package:structure_flutter/data/source/remote/service/dio_client.dart';
-//
-// abstract class UserRemoteDataSource {
-//   Future<List<UserGitEntity>> getUser(int page);
-// }
-//
-// @Singleton(as: UserRemoteDataSource)
-// class UserRemoteDataSourceImpl implements UserRemoteDataSource {
-//   final DioClient _dioClient;
-//
-//   UserRemoteDataSourceImpl(this._dioClient);
-//
-//   @override
-//   Future<List<UserGitEntity>> getUser(int page) async {
-//     final response = await _dioClient.get('/search/users',
-//         queryParameters: {'q': 'abc', 'page': page, 'per_page': 10});
-//     return UserGitResponse.fromJson(response).userGits;
-//   }
-// }
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:injectable/injectable.dart';
+
+abstract class UserRemoteDataSource {
+  Future<User> signInWithGoogle();
+
+  Future<void> signInWithCredentials(String email, String password);
+
+  Future<String> signUp(String email, String password);
+
+  Future<void> signOut();
+
+  Future<bool> isSignedIn();
+
+  Future<User> getUser();
+}
+
+@Singleton(as: UserRemoteDataSource)
+class UserRemoteDataSourceImpl extends UserRemoteDataSource {
+  final FirebaseAuth _firebaseAuth;
+  final GoogleSignIn _googleSignIn;
+
+  UserRemoteDataSourceImpl({
+    FirebaseAuth firebaseAuth,
+    GoogleSignIn googleSignIn,
+  })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
+        _googleSignIn = googleSignIn ?? GoogleSignIn();
+
+  Future<User> signInWithGoogle() async {
+    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    final AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    await _firebaseAuth.signInWithCredential(credential);
+    return _firebaseAuth.currentUser;
+  }
+
+  Future<void> signInWithCredentials(String email, String password) async {
+    return await _firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+  }
+
+  Future<String> signUp(String email, String password) async {
+    final value = await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    return value.user.uid;
+  }
+
+  Future<void> signOut() async {
+    return Future.wait([
+      _firebaseAuth.signOut(),
+      _googleSignIn.signOut(),
+    ]);
+  }
+
+  Future<bool> isSignedIn() async {
+    final currentUser = _firebaseAuth.currentUser;
+    return currentUser != null;
+  }
+
+  Future<User> getUser() async {
+    return _firebaseAuth.currentUser;
+  }
+}
