@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
-import '../bloc.dart';
+
 import '../../di/injection.dart';
 import '../../repositories/user_repository.dart';
 import '../bloc.dart';
@@ -43,7 +43,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       await _userRepository.signInWithCredentials(email, password);
       yield LoginState.success();
     } catch (_) {
-      print(_.toString());
       yield LoginState.failure();
     }
   }

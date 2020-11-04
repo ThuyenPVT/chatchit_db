@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:structure_flutter/data/entities/account.dart';
 
@@ -11,17 +10,16 @@ abstract class AccountRemoteDataSource {
     String imageURL,
   );
 
-  Future<void> sendFriendRequest(
+  Future<void> sendFriendRequest({
     String currentID,
     String recipientID,
     String name,
     bool pending,
-  );
+  });
 
-  Future<List<Account>> getUsers(String searchName);
+  Future<List<Account>> getUsersByName(String searchName);
 
-  List<QueryDocumentSnapshot> getAllUsers(
-      AsyncSnapshot<QuerySnapshot> snapshot);
+  Future<List<Account>> getListFriendAccount();
 }
 
 @Singleton(as: AccountRemoteDataSource)
@@ -47,7 +45,23 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   }
 
   @override
-  Future<List<Account>> getUsers(String searchName) async {
+  Future<void> sendFriendRequest({
+    String currentID,
+    String recipientID,
+    String name,
+    bool pending,
+  }) async {
+    try {
+      return await _userCollection
+          .doc(currentID)
+          .collection("Friends")
+          .doc(recipientID)
+          .set({"name": name, "pending": pending});
+    } catch (_) {}
+  }
+
+  @override
+  Future<List<Account>> getUsersByName(String searchName) async {
     var _ref = _userCollection
         .where("name", isGreaterThanOrEqualTo: searchName)
         .where("name", isLessThan: searchName + 'z');
@@ -56,26 +70,8 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   }
 
   @override
-  List<QueryDocumentSnapshot> getAllUsers(
-      AsyncSnapshot<QuerySnapshot> snapshot) {
-    if (snapshot.data != null) {
-      return snapshot.data.docs;
-    }
-  }
-
-  @override
-  Future<void> sendFriendRequest(
-    String currentID,
-    String recipientID,
-    String name,
-    bool pending,
-  ) async {
-    try {
-      return await _userCollection
-          .doc(currentID)
-          .collection("Friends")
-          .doc(recipientID)
-          .set({"name": name, "pending": pending});
-    } catch (_) {}
+  Future<List<Account>> getListFriendAccount() async {
+    final _snapshot = await _userCollection.get();
+    return _snapshot.docs.map((doc) => Account.fromFireStore(doc)).toList();
   }
 }

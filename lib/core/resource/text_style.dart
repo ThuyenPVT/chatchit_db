@@ -13,6 +13,8 @@ class AppStyles {
   static const white_10 = TextStyle(color: Colors.white, fontSize: 10.0);
   static const white_20 = TextStyle(color: Colors.white, fontSize: 20.0);
 
+  static const red_20 = TextStyle(color: Colors.red, fontSize: 20.0);
+
   static const white_bold_11 = TextStyle(
       color: Colors.white,
       fontSize: 11.0,

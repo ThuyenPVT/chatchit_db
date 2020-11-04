@@ -6,16 +6,16 @@ import 'widgets/birthday_date_picker.dart';
 import 'widgets/gender_radio.dart';
 import 'widgets/language_dropdown.dart';
 
-class SettingScreen extends StatefulWidget {
+class SettingPage extends StatefulWidget {
   final User user;
 
-  SettingScreen(this.user);
+  SettingPage(this.user);
 
   @override
   _SettingState createState() => _SettingState();
 }
 
-class _SettingState extends State<SettingScreen> {
+class _SettingState extends State<SettingPage> {
   User get user => widget.user;
 
   @override
