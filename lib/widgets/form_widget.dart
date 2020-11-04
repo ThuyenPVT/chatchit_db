@@ -27,23 +27,7 @@ class FormWidget extends StatefulWidget {
 }
 
 class _FormWidgetState extends State<FormWidget> {
-  Icon get _prefixIcon => widget.prefixIcon;
-
-  bool get _isDisplayText => widget.isDisplayText;
-
   bool _isObscureText = false;
-
-  IconData get _suffixIcon => widget.suffixIcon;
-
-  String get _hint => widget.hint;
-
-  String get _title => widget.title;
-
-  bool get _isValidForm => widget.isValidForm;
-
-  String get _validateMessage => widget.validateMsg;
-
-  TextEditingController get _formController => widget.controller;
 
   @override
   Widget build(BuildContext context) {
@@ -52,22 +36,22 @@ class _FormWidgetState extends State<FormWidget> {
         Container(
           padding: EdgeInsets.all(10.0),
           alignment: Alignment.topLeft,
-          child: Text(_title, style: AppStyles.black38_16),
+          child: Text(widget.title, style: AppStyles.black38_16),
         ),
         TextFormField(
           autocorrect: true,
-          validator: (_input) => _isValidForm ? null : _validateMessage,
-          controller: _formController,
+          validator: (_input) => widget.isValidForm ? null : widget.validateMsg,
+          controller: widget.controller,
           obscureText: _isObscureText,
           decoration: InputDecoration(
-            prefixIcon: _prefixIcon,
-            hintText: _hint,
+            prefixIcon: widget.prefixIcon,
+            hintText: widget.hint,
             suffixIcon: IconButton(
               onPressed: () {
                 setState(() => this._isObscureText = !this._isObscureText);
               },
-              icon: _isDisplayText
-                  ? Icon(_suffixIcon,
+              icon: widget.isDisplayText
+                  ? Icon(widget.suffixIcon,
                       color: _isObscureText ? Colors.blueGrey : Colors.blue)
                   : Container(),
             ),

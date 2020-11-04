@@ -8,7 +8,6 @@ import '../../repositories/user_repository.dart';
 @injectable
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final _userRepository = getIt<UserRepository>();
-
   LoginBloc(LoginState initialState) : super(initialState);
 
   @override
