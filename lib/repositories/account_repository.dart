@@ -12,16 +12,20 @@ abstract class AccountRepository {
     String imageURL,
   );
 
-  Future<List<Account>> getUsers(String searchName);
-
-  List<QueryDocumentSnapshot> getAllUsers(AsyncSnapshot<QuerySnapshot> snapshot);
-
-  Future<void> sendFriendRequest(
+  Future<void> sendFriendRequest({
     String currentID,
     String recipientID,
     String name,
     bool pending,
+  });
+
+  Future<List<Account>> getUsersByName(String searchName);
+
+  List<QueryDocumentSnapshot> getAllUsers(
+    AsyncSnapshot<QuerySnapshot> snapshot,
   );
+
+  Future<List<Account>> parseToObject();
 }
 
 class AccountRepositoryImpl extends AccountRepository {
@@ -37,7 +41,7 @@ class AccountRepositoryImpl extends AccountRepository {
   }
 
   Future<List<Account>> getUsers(String searchName) {
-    return _accountRemoteDataSource.getUsers(searchName);
+    return _accountRemoteDataSource.getUsersByName(searchName);
   }
 
   @override
@@ -47,13 +51,26 @@ class AccountRepositoryImpl extends AccountRepository {
   }
 
   @override
-  Future<void> sendFriendRequest(
+  Future<List<Account>> getUsersByName(String searchName) {
+    return _accountRemoteDataSource.getUsersByName(searchName);
+  }
+
+  @override
+  Future<List<Account>> parseToObject() {
+    return _accountRemoteDataSource.parseToObject();
+  }
+
+  @override
+  Future<void> sendFriendRequest({
     String currentID,
     String recipientID,
     String name,
     bool pending,
-  ) {
+  }) {
     return _accountRemoteDataSource.sendFriendRequest(
-        currentID, recipientID, name, pending);
+        currentID: currentID,
+        recipientID: recipientID,
+        name: name,
+        pending: pending);
   }
 }

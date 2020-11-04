@@ -11,22 +11,31 @@ abstract class AccountRemoteDataSource {
     String imageURL,
   );
 
-  Future<void> sendFriendRequest(
+  Future<void> sendFriendRequest({
     String currentID,
     String recipientID,
     String name,
     bool pending,
-  );
+  });
 
-  Future<List<Account>> getUsers(String searchName);
+  Future<List<Account>> getUsersByName(String searchName);
 
   List<QueryDocumentSnapshot> getAllUsers(
-      AsyncSnapshot<QuerySnapshot> snapshot);
+    AsyncSnapshot<QuerySnapshot> snapshot,
+  );
+
+  Future<List<Account>> parseToObject();
 }
 
 @Singleton(as: AccountRemoteDataSource)
 class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   final _userCollection = FirebaseFirestore.instance.collection("Users");
+
+  @override
+  Future<List<Account>> parseToObject() async {
+    final _snapshot = await _userCollection.get();
+    return _snapshot.docs.map((doc) => Account.fromFireStore(doc)).toList();
+  }
 
   @override
   Future<void> createUser(
@@ -47,7 +56,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   }
 
   @override
-  Future<List<Account>> getUsers(String searchName) async {
+  Future<List<Account>> getUsersByName(String searchName) async {
     var _ref = _userCollection
         .where("name", isGreaterThanOrEqualTo: searchName)
         .where("name", isLessThan: searchName + 'z');
@@ -61,15 +70,16 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
     if (snapshot.data != null) {
       return snapshot.data.docs;
     }
+    return [];
   }
 
   @override
-  Future<void> sendFriendRequest(
+  Future<void> sendFriendRequest({
     String currentID,
     String recipientID,
     String name,
     bool pending,
-  ) async {
+  }) async {
     try {
       return await _userCollection
           .doc(currentID)

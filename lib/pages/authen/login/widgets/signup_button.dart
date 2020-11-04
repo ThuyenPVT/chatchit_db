@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:structure_flutter/core/resource/text_style.dart';
-import 'package:structure_flutter/pages/authen/register/register_screen.dart';
+import 'package:structure_flutter/pages/authen/register/register_page.dart';
 
 class SignUpButton extends StatelessWidget {
   @override
