@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:structure_flutter/data/entities/account.dart';
+import 'package:structure_flutter/data/entities/conversation.dart';
 import 'package:structure_flutter/data/source/remote/account_remote_datasource.dart';
 import 'package:structure_flutter/di/injection.dart';
 
@@ -12,6 +13,13 @@ abstract class AccountRepository {
     String imageURL,
   );
 
+  Future<List<Account>> getUsers(String searchName);
+
+  List<Account> getAllAccountWithoutMe(
+    AsyncSnapshot<QuerySnapshot> snapshot,
+    String id,
+  );
+
   Future<void> sendFriendRequest({
     String currentID,
     String recipientID,
@@ -19,18 +27,48 @@ abstract class AccountRepository {
     bool pending,
   });
 
-  Future<List<Account>> getUsersByName(String searchName);
-
-  List<QueryDocumentSnapshot> getAllUsers(
-    AsyncSnapshot<QuerySnapshot> snapshot,
+  Future<void> createLastConversation(
+    String currentID,
+    String recipientID,
+    String conversationID,
+    String image,
+    String lastMessage,
+    String name,
+    int unseenCount,
   );
 
-  Future<List<Account>> parseToObject();
+  Stream<Conversation> getConversation(String conversationID);
+
+  Stream<List<ConversationSnippet>> getUserConversations(String userID);
+
+  Future<void> createConversation(
+    String currentID,
+    String recipientID,
+    Future<void> Function(String conversationID) onSuccess,
+  );
+
+  Future<List<Account>> parseToObject(String id);
+
+  Future<List<Account>> getUsersByName(String searchName);
 }
 
 class AccountRepositoryImpl extends AccountRepository {
   final _accountRemoteDataSource = getIt<AccountRemoteDataSource>();
 
+  @override
+  Future<void> createConversation(
+    String _currentID,
+    String _recipientID,
+    Future<void> _onSuccess(String _conversationID),
+  ) {
+    return _accountRemoteDataSource.createConversation(
+      _currentID,
+      _recipientID,
+      (_conversationID) => null,
+    );
+  }
+
+  @override
   Future<void> createUser(
     String uid,
     String name,
@@ -45,22 +83,17 @@ class AccountRepositoryImpl extends AccountRepository {
   }
 
   @override
-  List<QueryDocumentSnapshot> getAllUsers(
-      AsyncSnapshot<QuerySnapshot> snapshot) {
-    return _accountRemoteDataSource.getAllUsers(snapshot);
-  }
-
-  @override
   Future<List<Account>> getUsersByName(String searchName) {
     return _accountRemoteDataSource.getUsersByName(searchName);
   }
 
   @override
-  Future<List<Account>> parseToObject() {
-    return _accountRemoteDataSource.parseToObject();
+  Future<List<Account>> parseToObject(String id) async {
+    var _accounts = await _accountRemoteDataSource.parseToObject(id);
+    _accounts.removeWhere((element) => element.id == id);
+    return _accounts;
   }
 
-  @override
   Future<void> sendFriendRequest({
     String currentID,
     String recipientID,
@@ -72,5 +105,39 @@ class AccountRepositoryImpl extends AccountRepository {
         recipientID: recipientID,
         name: name,
         pending: pending);
+  }
+
+  @override
+  List<Account> getAllAccountWithoutMe(
+    AsyncSnapshot<QuerySnapshot> snapshot,
+    String id,
+  ) {
+    var accounts = _accountRemoteDataSource.getAllAccount(snapshot, id);
+    accounts.removeWhere((element) => element.id == id);
+    return accounts;
+  }
+
+  @override
+  Future<void> createLastConversation(
+    String currentID,
+    String recipientID,
+    String conversationID,
+    String image,
+    String lastMessage,
+    String name,
+    int unseenCount,
+  ) {
+    return _accountRemoteDataSource.createLastConversation(currentID,
+        recipientID, conversationID, image, lastMessage, name, unseenCount);
+  }
+
+  @override
+  Stream<Conversation> getConversation(String conversationID) {
+    return _accountRemoteDataSource.getConversation(conversationID);
+  }
+
+  @override
+  Stream<List<ConversationSnippet>> getUserConversations(String userID) {
+    return _accountRemoteDataSource.getUserConversations(userID);
   }
 }

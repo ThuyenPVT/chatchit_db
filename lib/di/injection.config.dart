@@ -34,6 +34,11 @@ GetIt $initGetIt(
   EnvironmentFilter environmentFilter,
 }) {
   final gh = GetItHelper(get, environment, environmentFilter);
+
+  // Eager singletons must be registered in the right order
+  // gh.singleton<UserGitBloc>(UserGitBloc());
+  // gh.singleton<UserRepository>(UserRepositoryImpl(get<UserRemoteDataSource>()));
+
   gh.singleton<BuildConfig>(BuildConfig());
   gh.singleton<DioClient>(DioClient(AppConstant.BASE_URL, Dio()));
   gh.singleton<UserRemoteDataSource>(UserRemoteDataSourceImpl());
@@ -41,10 +46,10 @@ GetIt $initGetIt(
   gh.singleton<StorageRemoteDataSource>(
       StorageRemoteDataSourceImpl(FirebaseStorage.instance.ref()));
   gh.singleton<UserRepository>(UserRepository());
-  gh.singleton<AccountRepository>(AccountRepositoryImpl());
   gh.singleton<StorageRepository>(StorageRepository());
   gh.singleton<MediaUtil>(MediaUtil());
   gh.singleton<RandomHelper>(RandomHelper(Random()));
+  gh.singleton<AccountRepository>(AccountRepositoryImpl());
   gh.singleton<SnackBarWidget>(SnackBarWidget());
   gh.singleton(AuthenticationBloc(Uninitialized()));
   gh.singleton(LoadDataBloc(LoadingData()));

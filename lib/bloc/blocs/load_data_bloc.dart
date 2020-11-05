@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:structure_flutter/bloc/events/load_data_event.dart';
 import 'package:structure_flutter/bloc/states/load_data_state.dart';
@@ -18,7 +19,9 @@ class LoadDataBloc extends Bloc<LoadDataEvent, LoadDataState> {
   Stream<LoadDataState> _mapLoadDataToState() async* {
     yield LoadingData();
     try {
-      final _data = await _accountRepository.parseToObject();
+      final _currentId = FirebaseAuth.instance.currentUser;
+      print(_currentId.uid.toString());
+      final _data = await _accountRepository.parseToObject(_currentId.uid);
       yield Success(_data);
     } catch (_) {
       yield Failure();

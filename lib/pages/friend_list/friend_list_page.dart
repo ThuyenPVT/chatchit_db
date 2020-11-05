@@ -1,41 +1,31 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:english_words/english_words.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/core/common/helpers/random_helper.dart';
-import 'package:structure_flutter/core/resource/assets_images.dart';
 import 'package:structure_flutter/data/entities/account.dart';
 import 'package:structure_flutter/di/injection.dart';
 import 'package:structure_flutter/repositories/account_repository.dart';
 import 'package:structure_flutter/widgets/loading_widget.dart';
 import 'package:structure_flutter/widgets/snackbar_widget.dart';
-
 import 'widgets/friend_profile.dart';
 
-class FriendListScreen extends StatefulWidget {
-  User user;
+class FriendListPage extends StatefulWidget {
+  String currentUid;
 
-  FriendListScreen(this.user);
+  FriendListPage(this.currentUid);
 
   @override
   _MessageState createState() => _MessageState();
 }
 
-class _MessageState extends State<FriendListScreen> {
-  CollectionReference users = FirebaseFirestore.instance.collection('Users');
-
+class _MessageState extends State<FriendListPage> {
   final _accountRepository = getIt<AccountRepository>();
 
   final _snackBar = getIt<SnackBarWidget>();
 
   final _loadDataBloc = getIt<LoadDataBloc>();
 
-  final _randomHelper = getIt<RandomHelper>();
-
-  User get user => widget.user;
+  final _random = getIt<RandomHelper>();
 
   @override
   void dispose() {
@@ -107,40 +97,21 @@ class _MessageState extends State<FriendListScreen> {
     );
   }
 
-  String convertTimeStampToHour(Map<String, dynamic> data) {
-    int timestamp = data['lastSeen'].seconds;
-    var date = DateTime.fromMillisecondsSinceEpoch(timestamp);
-    return DateFormat.jm().format(date);
-  }
-
-  Widget _buildGridView(Account account) {
-    String name = account.name;
-    String image = account.image;
-    String recipientID = account.id;
-    return user.uid.toString() != recipientID
-        ? FriendProfile(
-            name: name,
-            image: image,
-            followers: _randomHelper.followers(),
-            colors: _randomHelper.colors(),
-            feed: _randomHelper.feed(),
-            onPressed: () => _onPressed(recipientID, name),
-            isActiveButton: true,
-          )
-        : FriendProfile(
-            name: WordPair.random().asPascalCase,
-            image: AssetsImage.avatar,
-            followers: _randomHelper.followers(),
-            colors: _randomHelper.colors(),
-            feed: _randomHelper.feed(),
-            onPressed: () => _onPressed(recipientID, name),
-            isActiveButton: false,
-          );
+  Widget _buildGridView(Account recipient) {
+    return FriendProfile(
+      name: recipient.name,
+      image: recipient.image,
+      followers: _random.followers(),
+      colors: _random.colors(),
+      feed: _random.feed(),
+      onPressed: () => _onPressed(recipient.id, recipient.name),
+      isActiveButton: true,
+    );
   }
 
   void _onPressed(String recipientID, String name) {
     _accountRepository.sendFriendRequest(
-      currentID: user.uid,
+      currentID: widget.currentUid,
       recipientID: recipientID,
       name: name,
       pending: true,
