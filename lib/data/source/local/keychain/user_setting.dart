@@ -1,2 +1,1 @@
-class UserSetting {
-}
+class UserSetting {}

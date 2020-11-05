@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/resource/text_style.dart';
 
 class CheckBoxForm extends StatefulWidget {

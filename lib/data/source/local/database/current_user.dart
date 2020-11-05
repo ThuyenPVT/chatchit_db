@@ -1,2 +1,1 @@
-class CurrentUser {
-}
+class CurrentUser {}
