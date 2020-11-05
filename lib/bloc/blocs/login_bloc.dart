@@ -1,13 +1,16 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
 import '../bloc.dart';
 import '../../di/injection.dart';
 import '../../repositories/user_repository.dart';
+import '../bloc.dart';
 
 @injectable
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final _userRepository = getIt<UserRepository>();
+
   LoginBloc(LoginState initialState) : super(initialState);
 
   @override

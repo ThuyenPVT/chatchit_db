@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -10,6 +11,7 @@ class AppLocalization {
   static AppLocalization of(BuildContext context) {
     return Localizations.of<AppLocalization>(context, AppLocalization);
   }
+
   static const LocalizationsDelegate<AppLocalization> delegate =
       _LocalizationDelegate();
   static const languageDefault = Locale('en', '');
@@ -21,8 +23,8 @@ class AppLocalization {
   Map<String, String> _localizedStrings;
 
   Future<bool> load() async {
-    String jsonString =
-        await rootBundle.loadString('assets/localize/${locale.languageCode}.json');
+    String jsonString = await rootBundle
+        .loadString('assets/localize/${locale.languageCode}.json');
     Map<String, dynamic> jsonMap = json.decode(jsonString);
 
     _localizedStrings =

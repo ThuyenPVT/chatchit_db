@@ -11,7 +11,17 @@ abstract class AccountRemoteDataSource {
     String imageURL,
   );
 
+  Future<void> sendFriendRequest(
+    String currentID,
+    String recipientID,
+    String name,
+    bool pending,
+  );
+
   Future<List<Account>> getUsers(String searchName);
+
+  List<QueryDocumentSnapshot> getAllUsers(
+      AsyncSnapshot<QuerySnapshot> snapshot);
 }
 
 @Singleton(as: AccountRemoteDataSource)
@@ -27,6 +37,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   ) async {
     try {
       return await _userCollection.doc(uid).set({
+        "id": uid,
         "name": name,
         "email": email,
         "image": imageURL,
@@ -42,5 +53,29 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
         .where("name", isLessThan: searchName + 'z');
     final _snapshot = await _ref.get();
     return _snapshot.docs.map((doc) => Account.fromFireStore(doc)).toList();
+  }
+
+  @override
+  List<QueryDocumentSnapshot> getAllUsers(
+      AsyncSnapshot<QuerySnapshot> snapshot) {
+    if (snapshot.data != null) {
+      return snapshot.data.docs;
+    }
+  }
+
+  @override
+  Future<void> sendFriendRequest(
+    String currentID,
+    String recipientID,
+    String name,
+    bool pending,
+  ) async {
+    try {
+      return await _userCollection
+          .doc(currentID)
+          .collection("Friends")
+          .doc(recipientID)
+          .set({"name": name, "pending": pending});
+    } catch (_) {}
   }
 }

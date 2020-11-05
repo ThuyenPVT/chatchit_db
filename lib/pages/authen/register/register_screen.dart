@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/di/injection.dart';
 import 'package:structure_flutter/pages/authen/register/widgets/register_widget.dart';
+
 import 'widgets/app_bar.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -20,7 +21,7 @@ class _State extends State<RegisterPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return Scaffold(
       appBar: appBar(context),
       body: BlocProvider<RegisterBloc>(

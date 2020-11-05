@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +8,7 @@ import 'package:structure_flutter/bloc/events/register_event.dart';
 import 'package:structure_flutter/bloc/states/register_state.dart';
 import 'package:structure_flutter/di/injection.dart';
 import 'package:structure_flutter/repositories/account_repository.dart';
+import 'package:structure_flutter/repositories/storage_repository.dart';
 import 'package:structure_flutter/repositories/user_repository.dart';
 
 @injectable
@@ -13,6 +16,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final _userRepository = getIt<UserRepository>();
 
   final _accountRepository = getIt<AccountRepository>();
+
+  final _storageRepository = getIt<StorageRepository>();
 
   RegisterBloc(RegisterState initialState) : super(initialState);
 
@@ -23,7 +28,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         email: event.email.trim(),
         password: event.password.trim(),
         name: event.fullName.trim(),
-        imageURL: null,
+        imageURL: event.imageURL,
       );
     }
   }
@@ -32,12 +37,14 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     @required String email,
     @required String password,
     @required String name,
-    String imageURL,
+    File imageURL,
   }) async* {
     yield RegisterState.loading();
     try {
       final String uid = await _userRepository.signUp(email, password);
-      await _accountRepository.createUser(uid, name, email, imageURL);
+      var result = _storageRepository.uploadUserImage(uid, imageURL);
+      var _imageURL = await (await result).ref.getDownloadURL();
+      await _accountRepository.createUser(uid, name, email, _imageURL);
       yield RegisterState.success();
     } catch (e) {
       yield RegisterState.failure();

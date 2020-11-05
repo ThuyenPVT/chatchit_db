@@ -1,25 +1,32 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/core/resource/app_colors.dart';
+import 'package:structure_flutter/core/resource/assets_images.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
+import 'package:structure_flutter/core/utils/media_util.dart';
 import 'package:structure_flutter/di/injection.dart';
 import 'package:structure_flutter/pages/authen/login/login_screen.dart';
 import 'package:structure_flutter/widgets/button_widget.dart';
 import 'package:structure_flutter/widgets/form_widget.dart';
 import 'package:structure_flutter/widgets/snackbar_widget.dart';
 
+import 'heading.dart';
+
 class RegisterWidget extends StatefulWidget {
   State<RegisterWidget> createState() => _RegisterWidgetState();
 }
 
 class _RegisterWidgetState extends State<RegisterWidget> {
-  String _imageURL;
+  File _image;
 
   final _snackBar = getIt<SnackBarWidget>();
 
   final _registerBloc = getIt<RegisterBloc>();
+
+  final _mediaUtil = getIt<MediaUtil>();
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -32,6 +39,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
     _emailController.dispose();
     _passwordController.dispose();
     _fullNameController.dispose();
+    _emailController.addListener(_onRegisterEmailChanged);
+    _passwordController.addListener(_onRegisterPasswordChanged);
+    _fullNameController.addListener(_onRegisterFullNameChanged);
     super.dispose();
   }
 
@@ -45,7 +55,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
           _snackBar.failure('Register failure !');
         }
         if (state.isSubmitting) {
-          _snackBar.submitting('Register ...');
+          _snackBar.loading('Register ...');
         }
         if (state.isSuccess) {
           _snackBar.success('Register successful !');
@@ -59,10 +69,12 @@ class _RegisterWidgetState extends State<RegisterWidget> {
         cubit: _registerBloc,
         builder: (BuildContext context, RegisterState state) {
           return Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(10.0),
             child: Form(
               child: ListView(
                 children: <Widget>[
+                  Heading(),
+                  _imageSelector(),
                   FormWidget(
                     controller: _fullNameController,
                     hint: 'Enter your full name',
@@ -102,12 +114,59 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       ),
     );
   }
-  void _onFormSubmitted() {
+
+  Widget _imageSelector() {
+    return Align(
+      alignment: Alignment.center,
+      child: GestureDetector(
+        onTap: () async {
+          File _imageFile = await _mediaUtil.getImageFromLibrary();
+          setState(() {
+            _image = _imageFile;
+          });
+        },
+        child: Container(
+          height: 60,
+          width: 60,
+          decoration: BoxDecoration(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(500),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: _image != null
+                  ? FileImage(_image)
+                  : NetworkImage(AssetsImage.avatarDefault),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _onFormSubmitted() async {
     _registerBloc.add(RegisterWithCredentials(
       fullName: _fullNameController.text,
       email: _emailController.text,
       password: _passwordController.text,
-      imageURL: _imageURL,
+      imageURL: _image,
+    ));
+  }
+
+  void _onRegisterEmailChanged() {
+    _registerBloc.add(RegisterEmailChanged(
+      email: _emailController.text,
+    ));
+  }
+
+  void _onRegisterPasswordChanged() {
+    _registerBloc.add(RegisterPasswordChanged(
+      password: _passwordController.text,
+    ));
+  }
+
+  void _onRegisterFullNameChanged() {
+    _registerBloc.add(RegisterFullNameChanged(
+      fullName: _fullNameController.text,
     ));
   }
 }

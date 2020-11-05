@@ -18,7 +18,10 @@ class SignUpButton extends StatelessWidget {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => RegisterPage()));
           },
-          child: Text('sign up',style: AppStyles.black38_14,),
+          child: Text(
+            'sign up',
+            style: AppStyles.black38_14,
+          ),
         ),
       ],
     );

@@ -11,7 +11,7 @@ class SnackBarWidget {
     _buildContext = _context;
   }
 
-  void submitting(String _message) {
+  void loading(String _message) {
     Scaffold.of(_buildContext)
       ..hideCurrentSnackBar()
       ..showSnackBar(

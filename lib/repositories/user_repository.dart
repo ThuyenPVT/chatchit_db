@@ -1,7 +1,8 @@
 import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:structure_flutter/di/injection.dart';
 import 'package:structure_flutter/data/source/remote/user_remote_datasource.dart';
+import 'package:structure_flutter/di/injection.dart';
 
 class UserRepository {
   final _userRemoteDataSource = getIt<UserRemoteDataSource>();
