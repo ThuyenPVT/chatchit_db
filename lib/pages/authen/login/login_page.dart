@@ -9,10 +9,10 @@ import 'package:structure_flutter/di/injection.dart';
 import 'widgets/login_form.dart';
 
 class LoginPage extends StatefulWidget {
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginScreenState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginScreenState extends State<LoginPage> {
   final _loginBloc = getIt<LoginBloc>();
 
   @override

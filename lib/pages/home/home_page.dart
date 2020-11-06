@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
+import 'package:structure_flutter/core/resource/text_style.dart';
 import 'package:structure_flutter/di/injection.dart';
 import 'package:structure_flutter/pages/friend_list/friend_list_page.dart';
+import 'package:structure_flutter/pages/recent_conversation/recent_conversation.dart';
 import 'package:structure_flutter/pages/setting/setting_page.dart';
-
 import '../../core/resource/icon_style.dart';
 
 class HomePage extends StatefulWidget {
@@ -56,17 +57,6 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
           controller: _tabController,
         ),
       ),
-      appBar: AppBar(
-        title: Text('Home'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.exit_to_app),
-            onPressed: () {
-              _authenticationBloc.add(LoggedOut());
-            },
-          ),
-        ],
-      ),
       body: _tabBarPages(),
     );
   }
@@ -75,10 +65,10 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
     return TabBarView(
       controller: _tabController,
       children: <Widget>[
-        Text('Recent conversation page !'),
-        FriendListPage(user),
-        Text('Group friend page!'),
-        SettingPage(user),
+        RecentConversationScreen(user.uid),
+        FriendListPage(user.uid),
+        Text('Notification !'),
+        SettingPage(user.email),
       ],
     );
   }
