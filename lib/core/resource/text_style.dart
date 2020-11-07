@@ -13,6 +13,8 @@ class AppStyles {
   static const white_10 = TextStyle(color: Colors.white, fontSize: 10.0);
   static const white_20 = TextStyle(color: Colors.white, fontSize: 20.0);
 
+  static const red_20 = TextStyle(color: Colors.red, fontSize: 20.0);
+
   static const white_bold_11 = TextStyle(
       color: Colors.white,
       fontSize: 11.0,
@@ -25,8 +27,10 @@ class AppStyles {
 
   //Black styles
   static const back_28 = TextStyle(color: Colors.black, fontSize: 28.0);
-  static const black = TextStyle(color: Colors.black,fontWeight: FontWeight.bold);
+  static const black =
+      TextStyle(color: Colors.black, fontWeight: FontWeight.bold);
   static const black_24 = TextStyle(color: Colors.black, fontSize: 24.0);
+  static const black_16 = TextStyle(color: Colors.black, fontSize: 16.0);
   static const black38_16 = TextStyle(color: Colors.black38, fontSize: 16.0);
   static const black38_14 = TextStyle(color: Colors.black38, fontSize: 14.0);
   static const black_14 = TextStyle(color: Colors.black, fontSize: 14.0);
@@ -43,6 +47,5 @@ class AppStyles {
   static const black_12 = TextStyle(color: Colors.black12, fontSize: 16.0);
   static const black12_10 = TextStyle(color: Colors.black12, fontSize: 10.0);
   static const black14_10 = TextStyle(color: Colors.black12, fontSize: 14.0);
-
   static const black26_10 = TextStyle(color: Colors.black38, fontSize: 14.0);
 }

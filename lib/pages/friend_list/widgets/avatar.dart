@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/assets_images.dart';
 
 class Avatar extends StatelessWidget {
@@ -17,9 +18,10 @@ class Avatar extends StatelessWidget {
         baselineType: TextBaseline.ideographic,
         child: CircleAvatar(
           radius: 26,
-          backgroundColor: randomColors ? Colors.red : Colors.blue,
+          backgroundColor: randomColors ? AppColors.elm : AppColors.gull_gray,
           child: CircleAvatar(
             radius: 25,
+            backgroundColor: AppColors.double_spanish_white,
             backgroundImage: avatar != "null"
                 ? NetworkImage(avatar)
                 : NetworkImage(AssetsImage.avatarDefault),

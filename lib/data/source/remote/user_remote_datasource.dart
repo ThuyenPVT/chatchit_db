@@ -21,11 +21,10 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
   final FirebaseAuth _firebaseAuth;
   final GoogleSignIn _googleSignIn;
 
-  UserRemoteDataSourceImpl({
-    FirebaseAuth firebaseAuth,
-    GoogleSignIn googleSignIn,
-  })  : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn();
+  UserRemoteDataSourceImpl(
+    this._firebaseAuth,
+    this._googleSignIn,
+  );
 
   Future<User> signInWithGoogle() async {
     final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
@@ -47,11 +46,11 @@ class UserRemoteDataSourceImpl extends UserRemoteDataSource {
   }
 
   Future<String> signUp(String email, String password) async {
-    final value = await _firebaseAuth.createUserWithEmailAndPassword(
+    final _auth = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
-    return value.user.uid;
+    return _auth.user.uid;
   }
 
   Future<void> signOut() async {

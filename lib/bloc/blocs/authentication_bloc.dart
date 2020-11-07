@@ -15,8 +15,7 @@ class AuthenticationBloc
   AuthenticationBloc(AuthenticationState initialState) : super(initialState);
 
   @override
-  Stream<AuthenticationState> mapEventToState(
-    AuthenticationEvent event,
+  Stream<AuthenticationState> mapEventToState(AuthenticationEvent event,
   ) async* {
     if (event is AppStarted) {
       yield* _mapAppStartedToState();

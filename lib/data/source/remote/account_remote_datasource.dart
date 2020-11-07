@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:structure_flutter/data/entities/account.dart';
 
@@ -11,17 +10,9 @@ abstract class AccountRemoteDataSource {
     String imageURL,
   );
 
-  Future<void> sendFriendRequest(
-    String currentID,
-    String recipientID,
-    String name,
-    bool pending,
-  );
+  Future<List<Account>> getUsersByName(String searchName);
 
   Future<List<Account>> getUsers(String searchName);
-
-  List<QueryDocumentSnapshot> getAllUsers(
-      AsyncSnapshot<QuerySnapshot> snapshot);
 }
 
 @Singleton(as: AccountRemoteDataSource)
@@ -47,35 +38,17 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   }
 
   @override
-  Future<List<Account>> getUsers(String searchName) async {
-    var _ref = _userCollection
+  Future<List<Account>> getUsersByName(String searchName) async {
+    var _userRef = _userCollection
         .where("name", isGreaterThanOrEqualTo: searchName)
         .where("name", isLessThan: searchName + 'z');
-    final _snapshot = await _ref.get();
+    final _snapshot = await _userRef.get();
     return _snapshot.docs.map((doc) => Account.fromFireStore(doc)).toList();
   }
 
   @override
-  List<QueryDocumentSnapshot> getAllUsers(
-      AsyncSnapshot<QuerySnapshot> snapshot) {
-    if (snapshot.data != null) {
-      return snapshot.data.docs;
-    }
-  }
-
-  @override
-  Future<void> sendFriendRequest(
-    String currentID,
-    String recipientID,
-    String name,
-    bool pending,
-  ) async {
-    try {
-      return await _userCollection
-          .doc(currentID)
-          .collection("Friends")
-          .doc(recipientID)
-          .set({"name": name, "pending": pending});
-    } catch (_) {}
+  Future<List<Account>> getUsers(String searchName) {
+    // TODO: implement getUsers
+    throw UnimplementedError();
   }
 }
