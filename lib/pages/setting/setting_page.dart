@@ -30,7 +30,7 @@ class _SettingState extends State<SettingPage> {
         elevation: 0,
         backgroundColor: AppColors.outer_space,
         title: Text(
-          'Settings',
+          'Cài đặt',
           style: AppStyles.white,
         ),
         actions: <Widget>[

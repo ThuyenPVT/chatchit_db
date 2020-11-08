@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/core/common/helpers/random_helper.dart';
 import 'package:structure_flutter/core/resource/app_colors.dart';
+import 'package:structure_flutter/core/resource/icon_style.dart';
 import 'package:structure_flutter/core/resource/text_style.dart';
 import 'package:structure_flutter/data/entities/account.dart';
 import 'package:structure_flutter/data/source/remote/friend_remote_datasource.dart';
@@ -48,15 +49,11 @@ class _MessageState extends State<FriendListPage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppColors.outer_space,
-        title: Text(
-          'Friends',
-          style: AppStyles.white,
-        ),
+        leading: AppIcons.account_box_rounded,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),
-            onPressed: () {
-            },
+            onPressed: () {},
           ),
         ],
       ),
@@ -128,7 +125,7 @@ class _MessageState extends State<FriendListPage> {
 
   void _onPressed(String recipientID, String name) {
     _friendRemoteDataSource.sendFriendRequest(
-      currentID: widget.currentUid,
+      currentID: widget.currentUid.toString(),
       recipientID: recipientID,
       name: name,
       pending: true,

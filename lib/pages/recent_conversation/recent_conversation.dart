@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/core/resource/app_colors.dart';
+import 'package:structure_flutter/core/resource/icon_style.dart';
 import 'package:structure_flutter/core/resource/text_style.dart';
 import 'package:structure_flutter/core/utils/date_time_utils.dart';
 import 'package:structure_flutter/data/entities/conversation_snippet.dart';
@@ -51,12 +52,9 @@ class _MessageState extends State<RecentConversationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: AppIcons.menu,
         elevation: 0,
         backgroundColor: AppColors.outer_space,
-        title: Text(
-          'Home',
-          style: AppStyles.white,
-        ),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.search),

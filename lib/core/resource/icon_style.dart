@@ -10,6 +10,10 @@ class AppIcons {
   static const dashboard = Icon(Icons.dashboard);
   static const security = Icon(Icons.security);
 
+  static const notification_important = Icon(Icons.notification_important);
+  static const menu = Icon(Icons.menu);
+  static const account_box_rounded = Icon(Icons.account_box_rounded);
+
   static const google = Icon(FontAwesomeIcons.google, color: AppColors.white);
 
   static const email = Icon(Icons.email);

@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
-import 'package:structure_flutter/core/resource/text_style.dart';
 import 'package:structure_flutter/di/injection.dart';
 import 'package:structure_flutter/pages/friend_list/friend_list_page.dart';
+import 'package:structure_flutter/pages/notification/detail_notice_page.dart';
 import 'package:structure_flutter/pages/recent_conversation/recent_conversation.dart';
 import 'package:structure_flutter/pages/setting/setting_page.dart';
+
 import '../../core/resource/icon_style.dart';
 
 class HomePage extends StatefulWidget {
@@ -67,7 +68,7 @@ class _HomeState extends State<HomePage> with SingleTickerProviderStateMixin {
       children: <Widget>[
         RecentConversationScreen(user.uid),
         FriendListPage(user.uid),
-        Text('Notification !'),
+        MyHomePage(title: 'Notification page'),
         SettingPage(user.email),
       ],
     );

@@ -50,8 +50,7 @@ dependencies:
   cached_network_image: ^2.3.3
   flutter_spinkit: ^4.1.2
   timeago: ^2.0.8
-  firebase_analytics: any
-  firebase_messaging: 6.0.9
+  firebase_messaging: ^7.0.3
 
 dev_dependencies:
   flutter_test:
