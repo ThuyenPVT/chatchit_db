@@ -10,7 +10,16 @@ abstract class AccountRemoteDataSource {
     String imageURL,
   );
 
-  Future<List<Account>> getUsers(String searchName);
+  Future<void> sendFriendRequest({
+    String currentID,
+    String recipientID,
+    String name,
+    bool pending,
+  });
+
+  Future<List<Account>> getUsersByName(String searchName);
+
+  Future<List<Account>> getListFriendAccount();
 }
 
 @Singleton(as: AccountRemoteDataSource)
@@ -26,6 +35,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   ) async {
     try {
       return await _userCollection.doc(uid).set({
+        "id": uid,
         "name": name,
         "email": email,
         "image": imageURL,
@@ -35,11 +45,33 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   }
 
   @override
-  Future<List<Account>> getUsers(String searchName) async {
+  Future<void> sendFriendRequest({
+    String currentID,
+    String recipientID,
+    String name,
+    bool pending,
+  }) async {
+    try {
+      return await _userCollection
+          .doc(currentID)
+          .collection("Friends")
+          .doc(recipientID)
+          .set({"name": name, "pending": pending});
+    } catch (_) {}
+  }
+
+  @override
+  Future<List<Account>> getUsersByName(String searchName) async {
     var _ref = _userCollection
         .where("name", isGreaterThanOrEqualTo: searchName)
         .where("name", isLessThan: searchName + 'z');
     final _snapshot = await _ref.get();
+    return _snapshot.docs.map((doc) => Account.fromFireStore(doc)).toList();
+  }
+
+  @override
+  Future<List<Account>> getListFriendAccount() async {
+    final _snapshot = await _userCollection.get();
     return _snapshot.docs.map((doc) => Account.fromFireStore(doc)).toList();
   }
 }

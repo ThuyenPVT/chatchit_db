@@ -21,7 +21,7 @@ class _State extends State<RegisterPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return Scaffold(
       appBar: appBar(context),
       body: BlocProvider<RegisterBloc>(
