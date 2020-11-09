@@ -1,6 +1,8 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:injectable/injectable.dart';
+
 import '../../di/injection.dart';
 import '../../repositories/user_repository.dart';
 import '../bloc.dart';
@@ -13,8 +15,7 @@ class AuthenticationBloc
   AuthenticationBloc(AuthenticationState initialState) : super(initialState);
 
   @override
-  Stream<AuthenticationState> mapEventToState(
-    AuthenticationEvent event,
+  Stream<AuthenticationState> mapEventToState(AuthenticationEvent event,
   ) async* {
     if (event is AppStarted) {
       yield* _mapAppStartedToState();

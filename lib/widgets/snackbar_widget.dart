@@ -7,11 +7,11 @@ import 'package:structure_flutter/core/resource/app_colors.dart';
 class SnackBarWidget {
   BuildContext _buildContext;
 
-  set buildContext(BuildContext _context) {
-    _buildContext = _context;
+  set buildContext(BuildContext context) {
+    _buildContext = context;
   }
 
-  void loading(String _message) {
+  void loading(String message) {
     Scaffold.of(_buildContext)
       ..hideCurrentSnackBar()
       ..showSnackBar(
@@ -19,7 +19,7 @@ class SnackBarWidget {
           content: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(_message),
+              Text(message),
               CircularProgressIndicator(),
             ],
           ),
@@ -27,28 +27,28 @@ class SnackBarWidget {
       );
   }
 
-  void failure(String _message) {
+  void failure(String message) {
     Scaffold.of(_buildContext)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
           content: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Text('$_message'), Icon(Icons.error)],
+            children: [Text('$message'), Icon(Icons.error)],
           ),
           backgroundColor: Colors.red,
         ),
       );
   }
 
-  void success(String _message) {
+  void success(String message) {
     Scaffold.of(_buildContext)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
           content: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Text('$_message'), Icon(Icons.insert_emoticon)],
+            children: [Text('$message'), Icon(Icons.insert_emoticon)],
           ),
           backgroundColor: AppColors.greenColor,
         ),

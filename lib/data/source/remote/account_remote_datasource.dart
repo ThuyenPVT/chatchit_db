@@ -10,6 +10,8 @@ abstract class AccountRemoteDataSource {
     String imageURL,
   );
 
+  Future<List<Account>> getUsersByName(String searchName);
+
   Future<List<Account>> getUsers(String searchName);
 }
 
@@ -26,6 +28,7 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   ) async {
     try {
       return await _userCollection.doc(uid).set({
+        "id": uid,
         "name": name,
         "email": email,
         "image": imageURL,
@@ -35,11 +38,17 @@ class AccountRemoteDataSourceImpl implements AccountRemoteDataSource {
   }
 
   @override
-  Future<List<Account>> getUsers(String searchName) async {
-    var _ref = _userCollection
+  Future<List<Account>> getUsersByName(String searchName) async {
+    var _userRef = _userCollection
         .where("name", isGreaterThanOrEqualTo: searchName)
         .where("name", isLessThan: searchName + 'z');
-    final _snapshot = await _ref.get();
+    final _snapshot = await _userRef.get();
     return _snapshot.docs.map((doc) => Account.fromFireStore(doc)).toList();
+  }
+
+  @override
+  Future<List<Account>> getUsers(String searchName) {
+    // TODO: implement getUsers
+    throw UnimplementedError();
   }
 }

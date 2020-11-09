@@ -6,9 +6,18 @@ class AppColors {
   static const black54 = Colors.black54;
   static const black12 = Colors.black12;
   static const white_10 = Colors.white10;
+  static const lightGreen = Colors.lightGreen;
+
+  static const white_249_246_247 = Color.fromRGBO(249, 246, 247, 1);
 
   //White colors
   static const white = Colors.white;
+
+  static const outer_space = Color.fromRGBO(28, 43, 45, 1);
+
+  static const double_spanish_white = Color.fromRGBO(230, 213, 184, 1);
+  static const elm = Color.fromRGBO(31, 111, 139, 1);
+  static const gull_gray = Color.fromRGBO(153, 168, 178, 1);
 
   //Red colors
   static const red = Colors.red;
