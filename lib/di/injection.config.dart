@@ -3,12 +3,16 @@
 // **************************************************************************
 // InjectableConfigGenerator
 // **************************************************************************
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
+import 'package:structure_flutter/bloc/blocs/load_data_bloc.dart';
 import 'package:structure_flutter/core/common/constants/app_constant.dart';
+import 'package:structure_flutter/core/common/helpers/random_helper.dart';
 import 'package:structure_flutter/core/utils/media_util.dart';
 import 'package:structure_flutter/data/source/remote/account_remote_datasource.dart';
 import 'package:structure_flutter/data/source/remote/storage_remote_datasource.dart';
@@ -42,11 +46,13 @@ GetIt $initGetIt(
   gh.singleton<StorageRemoteDataSource>(
       StorageRemoteDataSourceImpl(FirebaseStorage.instance.ref()));
   gh.singleton<UserRepository>(UserRepository());
-  gh.singleton<AccountRepository>(AccountRepository());
   gh.singleton<StorageRepository>(StorageRepository());
+  gh.singleton<MediaUtil>(MediaUtil());
+  gh.singleton<RandomHelper>(RandomHelper(Random()));
+  gh.singleton<AccountRepository>(AccountRepositoryImpl());
   gh.singleton<SnackBarWidget>(SnackBarWidget());
   gh.singleton(AuthenticationBloc(Uninitialized()));
-  gh.singleton<MediaUtil>(MediaUtil());
+  gh.singleton(LoadDataBloc(LoadingData()));
   gh.factory<LoginBloc>(() => LoginBloc(LoginState.empty()));
   gh.factory<RegisterBloc>(() => RegisterBloc(RegisterState.empty()));
   return get;

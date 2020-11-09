@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:intl/intl.dart';
 class Account {
   final String id;
   final String email;
@@ -8,6 +8,11 @@ class Account {
   final String name;
 
   Account({this.id, this.email, this.name, this.image, this.lastSeen});
+
+  String getHours() {
+    var date = DateTime.fromMillisecondsSinceEpoch(lastSeen.seconds);
+    return DateFormat.jm().format(date);
+  }
 
   factory Account.fromFireStore(DocumentSnapshot snapshot) {
     var _data = snapshot.data;
