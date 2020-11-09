@@ -38,7 +38,7 @@ class ButtonWidget extends StatelessWidget {
             child: icon,
           ),
           FlatButton(
-            onPressed: _onPressed,
+            onPressed:_onPressed,
             child: Text(
               text,
               style: AppStyles.white_bold_11,

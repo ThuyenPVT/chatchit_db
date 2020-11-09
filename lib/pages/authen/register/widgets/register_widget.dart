@@ -1,19 +1,19 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:structure_flutter/bloc/bloc.dart';
 import 'package:structure_flutter/core/resource/app_colors.dart';
 import 'package:structure_flutter/core/resource/assets_images.dart';
 import 'package:structure_flutter/core/resource/icon_style.dart';
-import 'package:structure_flutter/core/resource/text_style.dart';
-import 'package:structure_flutter/core/utils/media_util.dart';
+import 'package:structure_flutter/core/utils/media_utils.dart';
 import 'package:structure_flutter/di/injection.dart';
-import 'package:structure_flutter/pages/authen/login/login_screen.dart';
+import 'package:structure_flutter/pages/authen/login/login_page.dart';
 import 'package:structure_flutter/widgets/button_widget.dart';
 import 'package:structure_flutter/widgets/form_widget.dart';
 import 'package:structure_flutter/widgets/snackbar_widget.dart';
+
+import 'heading.dart';
 
 class RegisterWidget extends StatefulWidget {
   State<RegisterWidget> createState() => _RegisterWidgetState();
@@ -31,6 +31,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
+
 
   @override
   void dispose() {
@@ -60,7 +61,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
           _snackBar.success('Register successful !');
           Timer(Duration(seconds: 2), () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => LoginScreen()));
+                MaterialPageRoute(builder: (context) => LoginPage()));
           });
         }
       },
@@ -72,7 +73,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
             child: Form(
               child: ListView(
                 children: <Widget>[
-                  _heading(),
+                  Heading(),
                   _imageSelector(),
                   FormWidget(
                     controller: _fullNameController,
@@ -138,26 +139,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _heading() {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "Let's get going!",
-            style: AppStyles.black_18_FW700,
-          ),
-          Text(
-            "Please enter your details.",
-            style: AppStyles.black_18_FW200,
-          ),
-          SizedBox(height: 20)
-        ],
       ),
     );
   }

@@ -20,7 +20,7 @@ class AppIcons {
   static const send_blue = Icon(Icons.send, color: AppColors.blue);
   static const chat_blue = Icon(Icons.chat, color: Colors.blue);
   static const call_blue = Icon(Icons.call, color: Colors.blue);
-  static const people_blue = Icon(Icons.people, color: Colors.blue);
+  static const people_blue = Icon(Icons.notifications, color: Colors.blue);
   static const search_blue = Icon(Icons.search, color: Colors.blue);
   static const setting_blue = Icon(Icons.settings, color: Colors.blue);
   static const assignment_blue = Icon(Icons.assignment, color: Colors.blue);
@@ -37,6 +37,7 @@ class AppIcons {
 
   //Black icons
   static const arrowBack_black = Icon(Icons.arrow_back, color: Colors.black);
+  static const arrowBack_white = Icon(Icons.arrow_back, color: Colors.white);
   static const arrowBackIos_black =
       Icon(Icons.arrow_back_ios, color: AppColors.black);
 }
